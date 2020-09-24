@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
-import signInBackgroundImg from '../../assets/sign-in-background.jpg';
+import ForgotenBackgroundImg from '../../assets/forgoten-password-background.jpg';
 
 export const Container = styled.div`
     height: 100vh;
@@ -13,6 +13,7 @@ export const Content = styled.div`
     flex-direction: column;
     place-content: center;
     align-items: center;
+
     width: 100%;
     max-width: 700px;
 
@@ -38,7 +39,7 @@ export const Content = styled.div`
     }
 
     > a {
-        color: #FF9000;
+        color: #F4EDE8;
         display: block;
         margin-top: 24px;
         transition: color 0.2s;
@@ -51,13 +52,13 @@ export const Content = styled.div`
         }
 
         &:hover {
-            color: ${shade(0.2, '#FF9000')};  
+            color: ${shade(0.2, '#F4EDE8')};  
         }
     }
 `;
 
 export const Background = styled.div`
     flex: 1;
-    background: url(${signInBackgroundImg}) no-repeat center;
+    background: url(${ForgotenBackgroundImg}) no-repeat center;
     background-size: cover;
 `;

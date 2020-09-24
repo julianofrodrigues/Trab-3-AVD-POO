@@ -25,6 +25,7 @@ const SiginUp: React.FC = () => {
     }, []);
     return(
         <Container>
+            <Background />
             <Content>
                 <img src={logoImg} alt="E-Vent +" />
                 <Form onSubmit={handleSubmit}>
@@ -39,7 +40,6 @@ const SiginUp: React.FC = () => {
                     Voltar para Login
                 </a>
             </Content>
-            <Background />
         </Container>
     );
 }
