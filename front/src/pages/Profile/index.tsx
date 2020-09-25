@@ -4,8 +4,9 @@ import logoImg from '../../assets/logo.png';
 import { Container } from './styles';
 
 
+
 const Profile: React.FC = () => {
-    
+  
     return(
         <Container>
             <header>
@@ -28,11 +29,17 @@ const Profile: React.FC = () => {
                     <p>Nome do Evento</p>
 
                     <strong>Local:</strong>
+                    <p>Estado:</p>
+                    <p>Cidade:</p>
+                    <p>Bairro:</p>
                     <p>Rua:</p>
                     <p>Numero:</p>
 
                     <strong>Sobre:</strong>
                     <p>Descrição do Evento</p>
+                    <br></br>
+                    
+                    <img src={logoImg} alt="imagem do evento" />
 
                     
 
@@ -40,10 +47,7 @@ const Profile: React.FC = () => {
                 </li>
             </ul>
         </Container>
-        
-        
-                   
-                
+            
     );
 }
 

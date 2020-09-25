@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import SiginIn from '../pages/SiginIn';
 import SiginUp from '../pages/SiginUp';
 import Profile from '../pages/Profile';
+import New from '../pages/New';
 import ForgotenPassword from '../pages/ForgotenPassword';
 
 
@@ -11,6 +12,7 @@ const Routes: React.FC = () => (
         <Route path="/" exact component={SiginIn} />
         <Route path="/register" component={SiginUp} />
         <Route path="/profile" component={Profile} />
+        <Route path="/new" component={New} />
         <Route path="/forgoten" component={ForgotenPassword} />
     </Switch>
 )
