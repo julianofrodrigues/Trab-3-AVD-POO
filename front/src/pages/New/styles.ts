@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
+
+
 export const Container = styled.div`
     width: 100%;
     max-width: 1180px;
@@ -56,4 +58,51 @@ export const Container = styled.div`
         border-color: #999 ;
     }
 
+    form{
+        margin: 80px auto;
+        padding: 64px;
+        max-width: 730px;
+        background: #FFF;
+        border-radius: 8px;
+        color: black;
+        display: flex;
+        flex-direction: column;
+    }
+
+    form fieldset{
+        margin-top: 64px;
+        min-inline-size: auto;
+        border: 0;
+    }
+
+    form legend{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    form legend h2{
+        font-size: 24px;
+    }
+    
+    form div{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    form select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: #232129;
+        border-radius: 8px;
+        border: 0;
+        padding: 16px 24px;
+        font-size: 16px;
+        color: #6C6C80;
+        width: 48%;
+        margin-bottom: 40px;   
+    }
 `;

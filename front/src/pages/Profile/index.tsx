@@ -25,6 +25,8 @@ const Profile: React.FC = () => {
 
             <ul>
                     <li>
+                    <img src={logoImg} alt="imagem do evento" />
+                    <br></br>
                     <strong>Evento:</strong>
                     <p>Nome do Evento</p>
 
@@ -37,11 +39,6 @@ const Profile: React.FC = () => {
 
                     <strong>Sobre:</strong>
                     <p>Descrição do Evento</p>
-                    <br></br>
-                    
-                    <img src={logoImg} alt="imagem do evento" />
-
-                    
 
                     <button type="button"><FiTrash2 size={20} color="a8a8b3"/></button>
                 </li>
