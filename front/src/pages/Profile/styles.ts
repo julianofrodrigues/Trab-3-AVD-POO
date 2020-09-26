@@ -61,10 +61,15 @@ export const Container = styled.div`
         margin-bottom: 24px;
     }
 
-    ul{
+    div{
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-gap: 24px;
+    }
+
+    ul{
+        display: grid;
+        grid-gap: 10px;
+        padding: 10px;
         list-style: none;
     }
     
@@ -109,4 +114,38 @@ export const Container = styled.div`
         margin-right: auto;
     }
 
+    ul div{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    ul a{
+        text-decoration: none;
+        text-align: center;
+        font-weight: bold;
+        font-family: Arial;
+
+        display: block;
+        line-height: 40px;
+
+
+        appearance: none;
+        background: #232129;
+        border-radius: 8px;
+        border: 0;
+        padding: 16px 24px;
+        font-size: 16px;
+        color: #FFF;
+        width: 48%;
+    
+            &: hover {
+                color: #FF9000;
+                background: ${shade(0.2, '#232129')};  
+            }
+            svg:hover path {
+                fill: #FF9000;
+              }
+        }
+    }
 `;

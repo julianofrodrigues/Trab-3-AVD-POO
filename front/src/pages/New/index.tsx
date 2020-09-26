@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { FiPower, FiArrowLeft } from 'react-icons/fi';
 import { FaStreetView } from 'react-icons/fa';
 import { AiOutlineFieldNumber } from 'react-icons/ai';
@@ -39,9 +39,11 @@ const New: React.FC = () => {
   }
 
   const [selectedUf, setSelectedUf] = useState('0');
+  const [selectedCity, setSelectedCity] = useState('0');
   const [ufs, setUfs] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
   const [selectedFile, setSelectedFile] = useState<File>();
+  const uf = selectedUf;
 
   useEffect(() => {
     axios.get<IBGEUFResponse[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
@@ -65,6 +67,17 @@ const New: React.FC = () => {
 
   }, [selectedUf]);
 
+  function handleSelectUf(event: ChangeEvent<HTMLSelectElement>) {
+    const uf = event.target.value;
+
+    setSelectedUf(uf);
+  };
+
+  function handleSelectCity(event: ChangeEvent<HTMLSelectElement>) {
+    const city = event.target.value;
+
+    console.log(city);
+  };
 
     return(
         <Container>
@@ -111,7 +124,10 @@ const New: React.FC = () => {
               <br></br>
 
               <div>
-                <select>
+                <select
+                  value={selectedUf} 
+                  onChange={handleSelectUf}
+                >
                 <option>Selecione uma UF</option>
                   {ufs.map(uf => (
                     <option key={uf} value={uf}>{uf}</option>
