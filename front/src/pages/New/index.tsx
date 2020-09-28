@@ -4,7 +4,6 @@ import { FaStreetView } from 'react-icons/fa';
 import { AiOutlineFieldNumber } from 'react-icons/ai';
 import { GiStreetLight } from 'react-icons/gi';
 import { MdLocalBar } from 'react-icons/md';
-import { FcInfo } from "react-icons/fc";
 import logoImg from '../../assets/logo.png';
 import Button from "../../components/Button";
 import Input from '../../components/Input'
