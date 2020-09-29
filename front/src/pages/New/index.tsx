@@ -13,21 +13,64 @@ import  Dropzone from '../../components/Dropzone'
 import * as Yup from 'yup';
 import axios from 'axios';
 import TextArea from "../../components/TextArea";
+import { useHistory, useLocation } from 'react-router-dom';
+import { Event } from "../../services/interfaces";
+import api from '../../services/api';
+import { useCookies } from 'react-cookie';
 
 const New: React.FC = () => {
-  const handleSubmit = useCallback(async (data: object) => { 
-      try{
-          const schema = Yup.object().shape({
-              name: Yup.string().required('Nome do evento obrigatório'),
-          });
 
-          await schema.validate(data, {
-              abortEarly: false
-          });
-      } catch ( error ) {
-          console.log(error)
-      }
-  }, []);
+  const [selectedUf, setSelectedUf] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
+  const [ufs, setUfs] = useState<string[]>([]);
+  const [cities, setCities] = useState<string[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File>();
+  const history = useHistory();
+  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+
+  async function handleSubmit(data: Event) {
+      try {
+        const schema = Yup.object().shape({
+          event_name: Yup.string().required('Nome do evento obrigatório'),
+        });
+
+        await schema.validate(data, {
+            abortEarly: false
+        });
+
+        console.log(data)
+        const place = ''
+        let bodyFormData = new FormData();
+        bodyFormData.set('event_name', data.event_name);
+        bodyFormData.set('district', data.district);
+        bodyFormData.set('street', data.street);
+        bodyFormData.set('number', data.number);
+        bodyFormData.set('commentary', data.commentary);
+        bodyFormData.set('uf', selectedUf);
+        bodyFormData.set('city', selectedCity);
+        bodyFormData.set('user_id', cookies.user._id);
+        if (selectedFile) {
+          bodyFormData.append('image', selectedFile);
+        }
+
+        try {
+            await api({
+                method: 'post',
+                url: 'events',
+                data: bodyFormData,
+                headers: {'Content-Type': 'multipart/form-data' }
+                })
+
+            alert('Cadastro efetuado com sucesso.')
+
+            history.push('/profile')
+        } catch (err) {
+            alert('Erro ao cadastrar seus dados.')
+        }
+    } catch ( error ) {
+        console.log(error)
+    }
+  }
 
   interface IBGEUFResponse {
     sigla: string;
@@ -36,13 +79,6 @@ const New: React.FC = () => {
   interface IBGECityResponse {
     nome: string;
   }
-
-  const [selectedUf, setSelectedUf] = useState('0');
-  const [selectedCity, setSelectedCity] = useState('0');
-  const [ufs, setUfs] = useState<string[]>([]);
-  const [cities, setCities] = useState<string[]>([]);
-  const [selectedFile, setSelectedFile] = useState<File>();
-  const uf = selectedUf;
 
   useEffect(() => {
     axios.get<IBGEUFResponse[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
@@ -53,16 +89,14 @@ const New: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedUf === '0') {
-      return;
-    };
-
-    axios.get<IBGECityResponse[]>(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`)
+    if (selectedUf) {
+      axios.get<IBGECityResponse[]>(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`)
       .then(response => {
       const cityNames = response.data.map(city => city.nome);
 
       setCities(cityNames);
     });
+    }
 
   }, [selectedUf]);
 
@@ -75,7 +109,7 @@ const New: React.FC = () => {
   function handleSelectCity(event: ChangeEvent<HTMLSelectElement>) {
     const city = event.target.value;
 
-    console.log(city);
+    setSelectedCity(city);
   };
 
     return(
@@ -103,23 +137,23 @@ const New: React.FC = () => {
           <legend>
             <h2>Dados do Evento</h2>
           </legend>
-           <Input name="name" icon={MdLocalBar} placeholder="Nome do evento" />
+           <Input name="event_name" icon={MdLocalBar} placeholder="Nome do evento" />
         </fieldset>
 
         <fieldset>
         <legend>
             <h2>Sobre o evento</h2>
           </legend>
-          <TextArea name="sobre" />
+          <Input name="commentary" />
         </fieldset>
 
         <fieldset>
           <legend>
             <h2>Endereço</h2>
           </legend>
-              <Input name="bairro" icon={FaStreetView} placeholder="Bairro" /> 
-              <Input name="rua" icon={GiStreetLight} placeholder="Rua"/>
-              <Input name="numero" icon={AiOutlineFieldNumber} placeholder="Número" />
+              <Input name="district" icon={FaStreetView} placeholder="Bairro" /> 
+              <Input name="street" icon={GiStreetLight} placeholder="Rua"/>
+              <Input name="number" icon={AiOutlineFieldNumber} placeholder="Número" />
               <br></br>
 
               <div>
@@ -132,7 +166,10 @@ const New: React.FC = () => {
                     <option key={uf} value={uf}>{uf}</option>
                   ))}
                 </select>
-                <select>
+                <select
+                  value={selectedCity} 
+                  onChange={handleSelectCity}
+                >
                 <option>Selecione uma cidade</option>
                   {cities.map(city => (
                     <option key={city} value={city}>{city}</option>

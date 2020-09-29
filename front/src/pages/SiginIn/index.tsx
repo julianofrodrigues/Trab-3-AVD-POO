@@ -13,7 +13,6 @@ const SiginIn: React.FC = () => {
     const history = useHistory();
     const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
     async function handleSubmit(data: object) {
-        console.log(data)
         try {
             const response = await api({
                 method: 'post',

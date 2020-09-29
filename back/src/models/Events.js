@@ -1,11 +1,15 @@
 const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate')
 const EventSchema = new mongoose.Schema({
-  name: String,
-  place: String,
-  photo: String,
+  event_name: String,
+  district: String,
+  street: String,
+  number: String,
   commentary: String,
+  uf: String,
+  city: String,
   user_id: String,
+  photo: String,
 }, {
   timestamps: true
 })

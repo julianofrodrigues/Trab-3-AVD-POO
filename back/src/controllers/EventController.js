@@ -1,4 +1,5 @@
 const Event = require('../models/Events')
+const Feedback = require('../models/Feedbacks')
 const sharp = require('sharp')
 const path = require('path')
 const fs = require('fs')
@@ -18,6 +19,36 @@ module.exports = {
     }
     sort = sort ? sort : 'createdAt'
     const event = await Event.paginate(search, { sort: `-${sort}`});
+    let array = []
+
+    const someFunction = (myArray) => {
+      const promises = myArray.map(async (o) => {
+        const likes = await Feedback.paginate({event_id: o._id, status: 2});
+        const dislikes = await Feedback.paginate({event_id: o._id, status: 1});
+  console.log(o)
+        return {
+          _id: o._id,
+          event_name: o.event_name,
+          district: o.district,
+          street: o.street,
+          number: o.number,
+          commentary: o.commentary,
+          uf: o.uf,
+          city: o.city,
+          user_id: o.user_id,
+          photo: o.photo,
+          createdAt: o.createdAt,
+          updatedAt: o.updatedAt,
+          __v: o.__v,
+          likes: likes.total,
+          dislikes: dislikes.total
+        }
+      });
+      return Promise.all(promises);
+  }
+
+    array = await someFunction(event.docs)
+    event.docs = array
     return res.json(event)
   },
   
@@ -55,7 +86,7 @@ module.exports = {
 
       return res.status(200).json()
       } catch (err) {
-          return res.status(400).json({error: err.message })
+        return res.status(400).json({error: err.message })
       }
   },
   
@@ -65,9 +96,13 @@ module.exports = {
     const { user_id = '' } = req.query
     const event = await Event.findById(id)
     message = true
-    if (event.user_id === user_id) await Event.findByIdAndRemove(id)
-    else message = false
-    return res.send(message)
+    if (event.user_id === user_id) {
+      await Event.findByIdAndRemove(id)
+      return res.status(200).json(true)
+    }
+    else {
+      return res.status(400).json({error: err.message })
+    }
   },
 
   // Altera o event

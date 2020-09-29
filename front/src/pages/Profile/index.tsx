@@ -6,8 +6,10 @@ import { Container } from './styles';
 import api from '../../services/api';
 import { useCookies } from 'react-cookie';
 import { Event } from "../../services/interfaces";
+import { useHistory, useLocation } from 'react-router-dom';
 
 const Profile: React.FC = () => {
+    const history = useHistory();
     const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
     const [data, setData] = useState<Event[]>([]);
 
@@ -15,12 +17,51 @@ const Profile: React.FC = () => {
         await api
           .get('events', {params: cookies.user})
           .then(({ data }) => {
-            console.log(data)
+            console.log(cookies.user)
             setData(data.docs)
           })
     }
     useEffect(() => {
       load()}, [])
+
+    const handleDelete = async (codigo: String) => {
+        try {
+            await api.delete(`events/${codigo}?user_id=${cookies.user._id}`)
+
+            alert('Cadastro deletado com sucesso.')
+            load()
+
+        } catch (err) {
+            alert('Erro ao deletar registro.')
+        }
+    }
+
+    const handleLogout = async () => {
+        removeCookie('user')
+        history.push('/')
+    }
+
+    const handleFeedback = async (codigo: String, status: Number) => {
+        try {
+            let form = {
+                user_id: cookies.user._id,
+                event_id: codigo,
+                status: status,
+            }
+            await api({
+                method: 'post',
+                url: `events/${codigo}/feedback`,
+                data: form,
+                })
+
+            alert('Cadastro alterado com sucesso.')
+            load()
+
+        } catch (err) {
+            alert('Erro ao alterar registro.')
+        }
+    }
+
     return(
         <Container>
             <header>
@@ -30,7 +71,7 @@ const Profile: React.FC = () => {
 
                 <a href="/new">Cadastra Evento +</a>
 
-                <button>
+                <button className="headerBtn" onClick={() => { handleLogout() }}>
                 <FiPower size={18} color="#E02041" />  
                 </button>
             </header>
@@ -49,24 +90,44 @@ const Profile: React.FC = () => {
                             <p>{o.event_name}</p>
 
                             <strong>Local:</strong>
-                            <p>{o.place}</p>
+                            <br/>
+
+                            <strong>Bairro: </strong>
+                            <p>{o.district}</p>
+                            <br/>
+
+                            <strong>Rua: </strong>
+                            <p>{o.street}</p>
+                            <br/>
+
+                            <strong>Numero: </strong>
+                            <p>{o.number}</p>
+                            <br/>
+
+                            <strong>UF: </strong>
+                            <p>{o.uf}</p>
+                            <br/>
+
+                            <strong>Cidade: </strong>
+                            <p>{o.city}</p>
+                            <br/>
 
                             <strong>Sobre:</strong>
                             <p>{o.commentary}</p>
                             <br></br>
 
                             <div>
-                                <a href="">
-                                    <AiTwotoneLike size={20} color="white" />
+                                <button className="feedback" type="button" onClick={() => { handleFeedback(o._id, 2) }}>
+                                {o.likes} <AiTwotoneLike size={20} color="white"/>
                                     Gostei
-                                </a>
+                                </button>
 
-                                <a href="">
-                                    <AiTwotoneDislike size={20} color="white" />
+                                <button className="feedback" type="button" onClick={() => { handleFeedback(o._id, 1) }}>
+                                {o.dislikes} <AiTwotoneDislike size={20} color="white"/>
                                     Não Gostei
-                                </a>
+                                </button>
                             </div>
-                            {o.user_id === cookies.user._id ? <button type="button"><FiTrash2 size={20} color="a8a8b3"/></button> : <div/>}
+                            {o.user_id === cookies.user._id ? <button className="trash" type="button" onClick={() => { handleDelete(o._id) }}><FiTrash2 size={20} color="a8a8b3"/></button> : <div/>}
                         </li>
                     </ul>
                     )

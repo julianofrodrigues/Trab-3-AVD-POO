@@ -2,6 +2,7 @@ const { Router } = require('express')
 const multer = require('multer')
 const EventController = require('./controllers/EventController')
 const UserController = require('./controllers/UserController')
+const FeedbackController = require('./controllers/FeedbackController')
 const uploadConfig = require('./config/upload')
 const routes = new Router();
 
@@ -12,6 +13,7 @@ routes.post('/events', upload.single('image'), EventController.store)
 routes.put('/events/:id', EventController.update)
 routes.delete('/events/:id', EventController.destroy)
 routes.get('/events/:id', EventController.show)
+routes.post('/events/:id/feedback', FeedbackController.store)
 
 routes.post('/users', UserController.store)
 routes.post('/users/login', UserController.login)

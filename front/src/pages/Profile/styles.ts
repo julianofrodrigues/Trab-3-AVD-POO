@@ -42,7 +42,7 @@ export const Container = styled.div`
             background: ${shade(0.2, '#FF9000')};  
         }
     }
-    header button {
+    .headerBtn {
         height: 60px;
         width: 60px;
         border-radius: 4px;
@@ -52,7 +52,7 @@ export const Container = styled.div`
         transition: border-color 0.2s;
         background: #FFF;
     }
-    header button:hover{
+    .headerBtn:hover{
         border-color: #999 ;
     }
 
@@ -80,14 +80,14 @@ export const Container = styled.div`
         position: relative;
     }
     
-    ul li button{
+    .trash{
         position: absolute;
         right: 24px;
         top: 24px;
         border: 0;
     }
     
-    ul li button:hover{
+    .trash:hover{
         opacity: 0.8;
     }
     
@@ -120,7 +120,7 @@ export const Container = styled.div`
         justify-content: space-between;
     }
     
-    ul a{
+    .feedback {
         text-decoration: none;
         text-align: center;
         font-weight: bold;
