@@ -8,7 +8,7 @@ const upload = multer({dest: 'uploads/resizes'});
 module.exports = {
   // Lista os Events do mais atual para o mais antigo
   async index(req, res) {
-    let { page = 1, sort = 'createdAt', termo = '' } = req.query;
+    let { sort = 'createdAt', termo = '' } = req.query;
     const search = {
       $or: [
         { name: { $regex: '.*' + termo + '.*' } },
@@ -16,9 +16,8 @@ module.exports = {
         { commentary: { $regex: '.*' + termo + '.*' } }
       ]
     }
-    page = page ? page : 1
     sort = sort ? sort : 'createdAt'
-    const event = await Event.paginate(search, { page , limit: 5, sort: `-${sort}`});
+    const event = await Event.paginate(search, { sort: `-${sort}`});
     return res.json(event)
   },
   

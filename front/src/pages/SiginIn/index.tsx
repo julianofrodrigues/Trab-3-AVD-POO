@@ -5,10 +5,29 @@ import logoImg from '../../assets/logo.png';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { Container, Content, Background } from './styles';
+import { useHistory, useLocation } from 'react-router-dom';
+import api from '../../services/api';
+import { useCookies } from 'react-cookie';
 
 const SiginIn: React.FC = () => {
-    function handleSubmit(data: object): void{ 
-        console.log(data);
+    const history = useHistory();
+    const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+    async function handleSubmit(data: object) {
+        console.log(data)
+        try {
+            const response = await api({
+                method: 'post',
+                url: `users/login`,
+                data: data,
+                })
+
+            setCookie('user', response.data)
+            alert('Acesso autorizado.')
+            history.push('/profile')
+
+        } catch (err) {
+            alert('Acesso negado.')
+        }
     }
     return(
         <Container>

@@ -17,12 +17,10 @@ module.exports = {
     email = email ? email : ''
     password = password ? password : ''
 
-    if (!email && !password) res.json('error')
+    if (!email && !password) return res.status(400).json('error')
     const user = await User.paginate(search, { page , limit: 5, sort: `-${sort}`});
-
-    message = false
-    if (user.total === 1) message = true
-    return res.json(message)
+    if (user.total === 1) return res.status(200).json(user.docs[0])
+    return res.status(400).json('error')
   },
   // gravar os users
   async store(req, res) {
