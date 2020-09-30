@@ -65,7 +65,7 @@ const Profile: React.FC = () => {
             <header>
                 <img src={logoImg} alt="E-Vent +" />
 
-                <span>Bem vindo, Usuario</span>
+                <span>Bem vindo, {cookies.user.name}</span>
 
                 <a href="/new">Cadastra Evento +</a>
 
