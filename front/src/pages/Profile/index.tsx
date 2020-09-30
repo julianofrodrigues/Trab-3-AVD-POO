@@ -53,8 +53,6 @@ const Profile: React.FC = () => {
                 url: `events/${codigo}/feedback`,
                 data: form,
                 })
-
-            alert('Cadastro alterado com sucesso.')
             load()
 
         } catch (err) {
@@ -92,24 +90,44 @@ const Profile: React.FC = () => {
                             <strong>Local:</strong>
                             <br/>
 
-                            <strong>Bairro: </strong>
-                            <p>{o.district}</p>
+                            <table>
+                                <td>
+                                    <strong>Bairro: </strong>
+                                </td>
+                                <td>
+                                    <p>{o.district}</p>
+                                </td>
+                                <td>
+                                    <strong>Rua: </strong>
+                                </td>
+                                <td>
+                                    <p>{o.street}</p>
+                                </td>
+                                <td>
+                                    <strong>Numero: </strong>
+                                </td>
+                                <td>
+                                    <p>{o.number}</p>
+                                </td>
+                            </table>
                             <br/>
 
-                            <strong>Rua: </strong>
-                            <p>{o.street}</p>
+                            <table>
+                                <td>
+                                    <strong>UF: </strong>
+                                </td>
+                                <td>
+                                   <p>{o.uf}</p>
+                                </td>
+                                <td>
+                                    <strong>Cidade: </strong>
+                                </td>
+                                <td>
+                                    <p>{o.city}</p>
+                                </td>
+                            </table>
                             <br/>
 
-                            <strong>Numero: </strong>
-                            <p>{o.number}</p>
-                            <br/>
-
-                            <strong>UF: </strong>
-                            <p>{o.uf}</p>
-                            <br/>
-
-                            <strong>Cidade: </strong>
-                            <p>{o.city}</p>
                             <br/>
 
                             <strong>Sobre:</strong>
